@@ -25,7 +25,10 @@ class _HomeActionState extends State<HomeAction> {
           FloatingActionButton(
             heroTag: 'share',
             tooltip: 'Bagikan Tanya',
-            child: Icon(Icons.share, color: Colors.blueAccent),
+            child: Icon(
+              Icons.share,
+              color: Theme.of(context).primaryColor,
+            ),
             backgroundColor: Colors.white,
             onPressed: () {},
           ),
@@ -35,18 +38,24 @@ class _HomeActionState extends State<HomeAction> {
             child: Row(
               children: <Widget>[
                 (widget.question?.isLoved ?? false)
-                    ? Icon(Icons.favorite, color: Colors.white)
-                    : Icon(Icons.favorite_border, color: Colors.white),
+                    ? Icon(Icons.favorite_border, color: Colors.white)
+                    : Icon(Icons.favorite_border,
+                        color: Theme.of(context).accentColor),
                 Container(width: 12),
                 Text((widget.question?.isLoved ?? false) ? 'Hapus' : 'Simpan',
-                    style: TextStyle(color: Colors.white)),
+                    style: TextStyle(
+                        color: (widget.question?.isLoved ?? false)
+                            ? Colors.white
+                            : Theme.of(context).accentColor)),
               ],
             ),
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 21),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(28),
             ),
-            color: Colors.red,
+            color: (widget.question?.isLoved ?? false)
+                ? Theme.of(context).accentColor
+                : Colors.white,
             onPressed: () {
               if (!mounted) return;
               setState(() {
@@ -59,7 +68,10 @@ class _HomeActionState extends State<HomeAction> {
           FloatingActionButton(
             heroTag: 'favorite',
             tooltip: 'Mode favorit',
-            child: Icon(Icons.bookmark_border, color: Colors.teal),
+            child: Icon(
+              Icons.bookmark_border,
+              color: Theme.of(context).primaryColor,
+            ),
             backgroundColor: Colors.white,
             onPressed: () => widget.loadOnlyLoved(toggle: true),
           ),

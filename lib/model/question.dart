@@ -30,7 +30,7 @@ final List<Question> dummyQuestions = [
   Question('2', 'Dimana saja daerah sensitif pasangan kamu?', 'SatuTanya', '2'),
   Question('3', 'Berapa banyak kamu habiskan uang hari ini?', 'SatuTanya', '1'),
   Question('4', 'Hal apa yang ingin kamu lupakan?', 'SatuTanya', '3'),
-  Question('5', 'Mengapa kamu menyukai hobi mu sekarang?', 'SatuTanya', '5'),
+  Question('5', 'Mengapa kamu menyukai hobi mu sekarang?', 'SatuTanya', '3'),
   Question('6', 'Siapa artis paling jorok menurut mu?', 'SatuTanya', '0'),
   Question('7', 'Siapa tokoh kartun favorite mu?', 'SatuTanya', '4'),
 ];
