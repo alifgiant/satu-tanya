@@ -92,15 +92,9 @@ class SettingScreen extends StatelessWidget {
             ),
           Container(height: 12),
           createButton(
-            'Bagikan Aplikasi',
+            'Bagikan aplikasi',
             Icon(Icons.share, size: 28, color: Colors.white),
             Colors.blueAccent,
-          ),
-          Container(height: 12),
-          createButton(
-            'Tentang Kami',
-            Icon(Icons.info_outline, size: 28, color: Colors.white),
-            Colors.brown,
           ),
         ],
       ),

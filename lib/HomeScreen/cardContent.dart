@@ -93,28 +93,7 @@ class _CardContentState extends State<CardContent> {
                 ],
               ),
             ),
-          ),
-        // if (!shouldShowAds)
-        //   Row(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: <Widget>[
-        //       IconButton(
-        //           icon: widget.question.isLoved
-        //               ? Icon(Icons.favorite, color: Colors.red,)
-        //               : Icon(Icons.favorite_border),
-        //           tooltip: 'Love',
-        //           onPressed: () {
-        //             setState(() {
-        //               widget.question.isLoved = !widget.question.isLoved;
-        //             });
-        //           }),
-        //       IconButton(
-        //         icon: Icon(Icons.share),
-        //         tooltip: 'Bagikan tanya',
-        //         onPressed: () {},
-        //       )
-        //     ],
-        //   ),
+          )
       ],
     );
   }
