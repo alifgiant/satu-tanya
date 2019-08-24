@@ -13,7 +13,7 @@ class Question {
       String content,
       String writer,
       String categoryId,
-      bool isActive}) {
+      bool isLoved}) {
     return Question(
       id == null ? this.id : id,
       content == null ? this.content : content,
