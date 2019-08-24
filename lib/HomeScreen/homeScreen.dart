@@ -17,16 +17,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (!isLoaded) loadFilters();
+    if (!isLoaded) loadDataFromInternet();
   }
 
-  void loadFilters() {
+  void loadDataFromInternet() {
     // load from internet logic
 
     // then
+    if (!mounted) return;
     setState(() {
       AppStateContainer.of(context).state.filters.addAll(dummyFilters);
-      AppStateContainer.of(context).state.questions.addAll(dummyQuestions);
+      AppStateContainer.of(context).state.addQuestions(dummyQuestions);
     });
 
     isLoaded = true;
@@ -58,7 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
           tooltip: 'Pengaturan',
           onPressed: () {
             Navigator.of(context).push(PageRouteBuilder(
-              
               pageBuilder: (ctx, _, __) => SettingScreen(
                 AppStateContainer.of(context).state,
               ),

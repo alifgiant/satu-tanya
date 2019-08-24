@@ -39,6 +39,7 @@ class _FilterButtonGroupState extends State<FilterButtonGroup> {
   }
 
   void switchState(List<Filter> filters, int index) {
+    if (!mounted) return;
     setState(() {
       if (filters[index].isActive &&
           filters.where((filter) => filter.isActive).length > 1) {

@@ -48,6 +48,7 @@ class _HomeActionState extends State<HomeAction> {
             ),
             color: Colors.red,
             onPressed: () {
+              if (!mounted) return;
               setState(() {
                 widget.question?.isLoved = !widget.question.isLoved;
                 if (widget.question?.isLoved == false) widget.loadOnlyLoved();

@@ -4,7 +4,18 @@ import 'package:satu_tanya/model/question.dart';
 
 class AppState {
   final List<Filter> filters = [];
-  final List<Question> questions = [];
+  final List<Question> _questions = [];
+
+  List<Question> filteredQuestions() {
+    return _questions
+        .where((question) => filters.any(
+            (filter) => filter.isActive && filter.id == question.categoryId))
+        .toList();
+  }
+
+  void addQuestions(Iterable<Question> iterable) {
+    _questions.addAll(iterable);
+  }
 }
 
 class AppStateContainer extends InheritedWidget {

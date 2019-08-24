@@ -39,6 +39,7 @@ class _CategoryPickerState extends State<CategoryPicker> {
               Checkbox(
                 value: selectedFilter[idx].isActive,
                 onChanged: (val) {
+                  if (!mounted) return;
                   setState(() {
                     selectedFilter[idx].isActive = val;
                   });

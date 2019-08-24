@@ -27,7 +27,9 @@ class _HomeContentState extends State<HomeContent> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    shuffledQuestions = AppStateContainer.of(context).state.questions
+    resetCounter();
+
+    shuffledQuestions = AppStateContainer.of(context).state.filteredQuestions()
       ..shuffle();
     selected5Questions = shuffledQuestions.take(maxCardStack).toList();
   }
@@ -93,6 +95,7 @@ class _HomeContentState extends State<HomeContent> {
         key: new Key(new Random().toString()),
         child: card,
         onDismissed: (direction) {
+          if (!mounted) return;
           setState(() {
             hasLoaded = false;
             selected5Questions.remove(question);
@@ -116,17 +119,18 @@ class _HomeContentState extends State<HomeContent> {
   }
 
   void loadOnlyLoved({bool toggle = false}) {
+    if (!mounted) return;
     setState(() {
       if (toggle) showOnlyLoved = !showOnlyLoved;
       shuffledQuestions = AppStateContainer.of(context)
           .state
-          .questions
+          .filteredQuestions()
           // if not show only loved, show everything
           .where((question) => showOnlyLoved ? question.isLoved : true)
           .toList()
             ..shuffle();
       selected5Questions = shuffledQuestions.take(maxCardStack).toList();
-      currentStart = 0;
+      resetCounter();
     });
 
     String text = 'Menampilkan tanya favorit mu';
@@ -143,13 +147,18 @@ class _HomeContentState extends State<HomeContent> {
     await Future.delayed(Duration(seconds: waitDuration));
     hasLoaded = true;
     if (selected5Questions.length < maxCardStack) {
+      if (!mounted) return;
       setState(() {
         selected5Questions.add(shuffledQuestions[currentStart++]);
         if (currentStart >= shuffledQuestions.length) {
           shuffledQuestions.shuffle();
-          currentStart = 0;
+          resetCounter();
         }
       });
     }
+  }
+
+  void resetCounter() {
+    currentStart = 0;
   }
 }
