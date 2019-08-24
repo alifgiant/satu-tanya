@@ -35,36 +35,78 @@ class _HomeContentState extends State<HomeContent> {
   Widget build(BuildContext context) {
     int idx = 0;
     return Stack(
-      alignment: AlignmentDirectional.center,
-      children: selected5Questions
-          .map((question) {
-            final i = idx++;
-            return Positioned(
-              height: 550,
-              bottom: 26 + (15.0 * i),
-              child: buildCard(
-                  context: context,
-                  question: question,
-                  scale: i,
-                  isActive: i == 0 && hasLoaded),
-            );
-          })
-          .toList()
-          .reversed
-          .toList()
-            ..add(Positioned(
-              bottom: 20,
-              right: 28,
-              child: FloatingActionButton(
-                tooltip: 'Favorite Tanya',
-                child: showOnlyLoved
-                    ? Icon(Icons.bookmark)
-                    : Icon(Icons.bookmark_border),
-                backgroundColor: Colors.redAccent,
-                onPressed: loadOnlyLoved,
-              ),
-            )),
-    );
+        alignment: AlignmentDirectional.center,
+        children: selected5Questions
+            .map((question) {
+              final i = idx++;
+              return Positioned(
+                bottom: 20 + (20.0 * i),
+                child: buildCard(
+                    context: context,
+                    question: question,
+                    scale: i,
+                    isActive: i == 0 && hasLoaded),
+              );
+            })
+            .toList()
+            .reversed
+            .toList()
+              ..add(Positioned(
+                bottom: 60,
+                left: 28,
+                right: 28,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    FloatingActionButton(
+                      heroTag: 'share',
+                      tooltip: 'Bagikan Tanya',
+                      child: Icon(Icons.share, color: Colors.blueAccent),
+                      backgroundColor: Colors.white,
+                      onPressed: loadOnlyLoved,
+                    ),
+                    Container(width: 16),
+                    RaisedButton(
+                      elevation: 6,
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.favorite_border, color: Colors.white),
+                          Container(width: 12),
+                          Text('Simpan', style: TextStyle(color: Colors.white)),
+                        ],
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16, horizontal: 21),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(28),
+                      ),
+                      color: Colors.red,
+                      onPressed: () {},
+                    ),
+                    Container(width: 16),
+                    FloatingActionButton(
+                      heroTag: 'favorite',
+                      tooltip: 'Favorite Tanya',
+                      child: Icon(Icons.bookmark_border, color: Colors.teal),
+                      backgroundColor: Colors.white,
+                      onPressed: loadOnlyLoved,
+                    ),
+                  ],
+                ),
+              ))
+        // ..add(Positioned(
+        //   bottom: 20,
+        //   left: 28,
+        //   child: FloatingActionButton(
+        //     tooltip: 'Favorite Tanya',
+        //     child: showOnlyLoved
+        //         ? Icon(Icons.favorite)
+        //         : Icon(Icons.favorite_border),
+        //     backgroundColor: Colors.redAccent,
+        //     onPressed: loadOnlyLoved,
+        //   ),
+        // )),
+        );
   }
 
   Widget buildCard({
@@ -74,13 +116,15 @@ class _HomeContentState extends State<HomeContent> {
     bool isActive = false,
   }) {
     final card = Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       elevation: 6,
       child: Container(
         child: CardContent(
           question: question,
           scale: scale,
         ),
-        width: MediaQuery.of(context).size.width * (0.85 - (0.05 * scale)),
+        height: MediaQuery.of(context).size.height * 0.78,
+        width: MediaQuery.of(context).size.width * (0.9 - (0.1 * scale)),
       ),
     );
     if (isActive) {

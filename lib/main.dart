@@ -9,7 +9,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Satu Tanya',
-        theme: ThemeData(primarySwatch: Colors.teal),
+        theme: ThemeData(
+          primaryColor: Color.fromRGBO(36, 48, 80, 1),
+        ),
         home: AppStateContainer(
           child: HomeScreen(),
           state: AppState(),

@@ -11,11 +11,12 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return Container();
     return AppStateContainer(
       state: appState,
       child: Scaffold(
         appBar: buildAppBar(context),
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).primaryColor,
         body: ListView(
           children: <Widget>[
             createSectionTitle(context, 'Kategori Tanya'),
@@ -46,7 +47,7 @@ class SettingScreen extends StatelessWidget {
         onPressed: () => Navigator.of(context).pop(),
       ),
       elevation: 0,
-      backgroundColor: Theme.of(context).accentColor,
+      backgroundColor: Theme.of(context).primaryColor,
       centerTitle: true,
     );
   }
@@ -70,25 +71,35 @@ class SettingScreen extends StatelessWidget {
           if (Theme.of(context).platform == TargetPlatform.android)
             createButton(
               'Beri bintang di Play Store',
-              'assets/store/playstore.svg',
+              SvgPicture.asset(
+                'assets/store/playstore.svg',
+                semanticsLabel: 'Play Store Logo',
+                height: 28,
+                color: Colors.white,
+              ),
               Colors.redAccent,
             ),
           if (Theme.of(context).platform == TargetPlatform.iOS)
             createButton(
               'Beri bintang di App Store',
-              'assets/store/applestore.svg',
+              SvgPicture.asset(
+                'assets/store/applestore.svg',
+                semanticsLabel: 'App Store Logo',
+                height: 28,
+                color: Colors.white,
+              ),
               Colors.blueGrey,
             ),
           Container(height: 12),
           createButton(
             'Bagikan Aplikasi',
-            null,
+            Icon(Icons.share, size: 28, color: Colors.white),
             Colors.blueAccent,
           ),
           Container(height: 12),
           createButton(
             'Tentang Kami',
-            null,
+            Icon(Icons.info_outline, size: 28, color: Colors.white),
             Colors.brown,
           ),
         ],
@@ -96,26 +107,14 @@ class SettingScreen extends StatelessWidget {
     );
   }
 
-  RaisedButton createButton(String text, String icon, Color color) {
+  RaisedButton createButton(String text, Widget icon, Color color) {
     return RaisedButton(
       padding: const EdgeInsets.symmetric(vertical: 10),
       color: color,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          if (icon != null)
-            SvgPicture.asset(
-              icon,
-              semanticsLabel: 'Play Store Logo',
-              height: 28,
-              color: Colors.white,
-            ),
-          if (icon == null)
-            Icon(
-              Icons.info_outline,
-              size: 28,
-              color: Colors.white,
-            ),
+          icon,
           Container(width: 16),
           Text(
             text,

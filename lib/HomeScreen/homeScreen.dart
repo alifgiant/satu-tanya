@@ -57,8 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: Icon(Icons.settings),
           tooltip: 'Pengaturan',
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (ctx) => SettingScreen(
+            Navigator.of(context).push(PageRouteBuilder(
+              
+              pageBuilder: (ctx, _, __) => SettingScreen(
                 AppStateContainer.of(context).state,
               ),
             ));
