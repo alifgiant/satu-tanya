@@ -1,3 +1,6 @@
+final questionsRemoteUrl =
+    'https://raw.githubusercontent.com/alifgiant/satu-tanya/master/data/questions.json';
+
 class Question {
   final String id;
   final String content;
@@ -20,6 +23,16 @@ class Question {
       writer == null ? this.writer : writer,
       categoryId == null ? this.categoryId : categoryId,
       isLoved: isLoved == null ? this.isLoved : isLoved,
+    );
+  }
+
+  factory Question.fromJson(Map<String, dynamic> parsedJson) {
+    return Question(
+      parsedJson['id'],
+      parsedJson['content'],
+      parsedJson['writer'],
+      parsedJson['categoryId'],
+      isLoved: parsedJson['isLoved'],
     );
   }
 }

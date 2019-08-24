@@ -1,3 +1,6 @@
+final filtersRemoteUrl =
+    'https://raw.githubusercontent.com/alifgiant/satu-tanya/master/data/filters.json';
+
 class Filter {
   final String id;
   final String name;
@@ -10,6 +13,14 @@ class Filter {
       id == null ? this.id : id,
       name == null ? this.name : name,
       isActive == null ? this.isActive : isActive,
+    );
+  }
+
+  factory Filter.fromJson(Map<String, dynamic> parsedJson) {
+    return Filter(
+      parsedJson['id'],
+      parsedJson['name'],
+      parsedJson['isActive'],
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:satu_tanya/SettingScreen/settingScreen.dart';
 import 'package:satu_tanya/model/app_state.dart';
 import 'package:satu_tanya/model/filter.dart';
 import 'package:satu_tanya/model/question.dart';
+import 'package:satu_tanya/repository/repositoryHelper.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -20,15 +21,23 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!isLoaded) loadDataFromInternet();
   }
 
-  void loadDataFromInternet() {
+  void loadDataFromInternet() async {
+    // add logic to prevent download everytime
+    // ...
+
     // load from internet logic
+    final filters = await RepositoryHelper.getFilters();
+    final questions = await RepositoryHelper.getQuestions();
+    // print('ass');
 
     // then
-    if (!mounted) return;
+    // if (!mounted) return;
     setState(() {
       AppStateContainer.of(context).state.filters.addAll(dummyFilters);
       AppStateContainer.of(context).state.addQuestions(dummyQuestions);
     });
+
+    // print('ass2');
 
     isLoaded = true;
   }
