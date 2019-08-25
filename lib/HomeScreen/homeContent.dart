@@ -6,6 +6,7 @@ import 'package:satu_tanya/HomeScreen/cardContent.dart';
 import 'package:satu_tanya/HomeScreen/homeAction.dart';
 import 'package:satu_tanya/model/app_state.dart';
 import 'package:satu_tanya/model/question.dart';
+import 'package:satu_tanya/repository/repositoryHelper.dart';
 
 final maxCardStack = 3;
 final waitDuration = 1;
@@ -20,6 +21,7 @@ class _HomeContentState extends State<HomeContent> {
   List<Question> selected5Questions;
   int currentStart = maxCardStack;
 
+  bool hasDataOnDB = false;
   bool hasLoaded = true;
   bool showOnlyLoved = false;
 
@@ -27,11 +29,40 @@ class _HomeContentState extends State<HomeContent> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    resetCounter();
+    if (!hasDataOnDB) loadDataFromInternet();
+    resetView();
+  }
 
-    shuffledQuestions = AppStateContainer.of(context).state.filteredQuestions()
-      ..shuffle();
-    selected5Questions = shuffledQuestions.take(maxCardStack).toList();
+  void loadDataFromInternet() async {
+    // add logic to prevent download everytime
+    // ...
+    print('after load 0');
+
+    // load from internet logic
+    final filters = await RepositoryHelper.getFilters();
+    final questions = await RepositoryHelper.getQuestions();
+    AppStateContainer.of(context).state.filters.addAll(filters);
+    AppStateContainer.of(context).state.addQuestions(questions);
+    hasDataOnDB = true;
+
+    print('after load 1');
+
+    // then
+    resetView();
+  }
+
+  void resetView() {
+    if (!mounted) return;
+    setState(() {
+      currentStart = 0; // resetCounter
+      shuffledQuestions = AppStateContainer.of(context)
+          .state
+          .filteredQuestions()
+          .where((question) => showOnlyLoved ? question.isLoved : true)
+          .toList()
+            ..shuffle();
+      selected5Questions = shuffledQuestions.take(maxCardStack).toList();
+    });
   }
 
   @override
@@ -55,7 +86,7 @@ class _HomeContentState extends State<HomeContent> {
             ..add(Container(
               alignment: AlignmentDirectional.center,
               child: Text(
-                'Tanpa Tanya (?)',
+                hasDataOnDB ? 'Tanpa Tanya (?)' : 'Loading ...',
                 style: Theme.of(context)
                     .textTheme
                     .display1
@@ -119,19 +150,8 @@ class _HomeContentState extends State<HomeContent> {
   }
 
   void loadOnlyLoved({bool toggle = false}) {
-    if (!mounted) return;
-    setState(() {
-      if (toggle) showOnlyLoved = !showOnlyLoved;
-      shuffledQuestions = AppStateContainer.of(context)
-          .state
-          .filteredQuestions()
-          // if not show only loved, show everything
-          .where((question) => showOnlyLoved ? question.isLoved : true)
-          .toList()
-            ..shuffle();
-      selected5Questions = shuffledQuestions.take(maxCardStack).toList();
-      resetCounter();
-    });
+    if (toggle) showOnlyLoved = !showOnlyLoved;
+    resetView();
 
     String text = 'Menampilkan tanya favorit mu';
     if (!showOnlyLoved) text = 'Menampilkan semua tanya';
@@ -151,14 +171,9 @@ class _HomeContentState extends State<HomeContent> {
       setState(() {
         selected5Questions.add(shuffledQuestions[currentStart++]);
         if (currentStart >= shuffledQuestions.length) {
-          shuffledQuestions.shuffle();
-          resetCounter();
+          resetView();
         }
       });
     }
-  }
-
-  void resetCounter() {
-    currentStart = 0;
   }
 }
