@@ -52,24 +52,32 @@ class _HomeContentState extends State<HomeContent> {
     List<Filter> filters = [];
     List<Question> questions = [];
 
+    // read from db / pref
+    filters = await PrefHelper.loadFiltersFromDB();
+    questions = await PrefHelper.loadQuestionsFromDB();
+    loadDataToAppState(filters, questions);
+    resetView();
+
+    hasDataInMemory = true;
+
     if (await shouldLoadNewData()) {
       // read from internet
       filters = await RemoteRepoHelper.getFilters();
       questions = await RemoteRepoHelper.getQuestions();
       saveDataToDB(filters, questions);
-    } else {
-      // read from db / pref
-      filters = await PrefHelper.loadFiltersFromDB();
-      questions = await PrefHelper.loadQuestionsFromDB();
-    }
 
+      AppStateContainer.of(context).state.clearData();
+      loadDataToAppState(filters, questions);
+
+      // then
+      resetView();
+    }
+  }
+
+  void loadDataToAppState(List<Filter> filters, List<Question> questions) {
     // load to memory
     AppStateContainer.of(context).state.filters.addAll(filters);
     AppStateContainer.of(context).state.addQuestions(questions);
-
-    // then
-    hasDataInMemory = true;
-    resetView();
   }
 
   void saveDataToDB(List<Filter> filters, List<Question> questions) async {

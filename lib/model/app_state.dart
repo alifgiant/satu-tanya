@@ -16,6 +16,11 @@ class AppState {
   void addQuestions(Iterable<Question> iterable) {
     _questions.addAll(iterable);
   }
+
+  void clearData() {
+    _questions.clear();
+    filters.clear();
+  }
 }
 
 class AppStateContainer extends InheritedWidget {
