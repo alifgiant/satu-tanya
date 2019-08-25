@@ -6,7 +6,7 @@ import 'package:satu_tanya/HomeScreen/cardContent.dart';
 import 'package:satu_tanya/HomeScreen/homeAction.dart';
 import 'package:satu_tanya/model/app_state.dart';
 import 'package:satu_tanya/model/question.dart';
-import 'package:satu_tanya/repository/repositoryHelper.dart';
+import 'package:satu_tanya/repository/remoteRepoHelper.dart';
 
 final maxCardStack = 3;
 final waitDuration = 1;
@@ -21,33 +21,29 @@ class _HomeContentState extends State<HomeContent> {
   List<Question> selected5Questions;
   int currentStart = maxCardStack;
 
-  bool hasDataOnDB = false;
-  bool hasLoaded = true;
+  bool hasLoadDataToMemory = false;
+  bool hasReloaded = true;
   bool showOnlyLoved = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (!hasDataOnDB) loadDataFromInternet();
+    if (!hasLoadDataToMemory) loadDataFromInternet();
     resetView();
   }
 
   void loadDataFromInternet() async {
-    // add logic to prevent download everytime
-    // ...
-    print('after load 0');
+    final config = await RemoteRepoHelper.getRemoteConfig();
 
-    // load from internet logic
-    final filters = await RepositoryHelper.getFilters();
-    final questions = await RepositoryHelper.getQuestions();
+    // load from internet
+    final filters = await RemoteRepoHelper.getFilters();
+    final questions = await RemoteRepoHelper.getQuestions();
     AppStateContainer.of(context).state.filters.addAll(filters);
     AppStateContainer.of(context).state.addQuestions(questions);
-    hasDataOnDB = true;
-
-    print('after load 1');
 
     // then
+    hasLoadDataToMemory = true;
     resetView();
   }
 
@@ -79,14 +75,14 @@ class _HomeContentState extends State<HomeContent> {
                 context: context,
                 question: question,
                 scale: i,
-                isActive: i == 0 && hasLoaded),
+                isActive: i == 0 && hasReloaded),
           );
         },
       ).toList()
             ..add(Container(
               alignment: AlignmentDirectional.center,
               child: Text(
-                hasDataOnDB ? 'Tanpa Tanya (?)' : 'Loading ...',
+                hasLoadDataToMemory ? 'Tanpa Tanya (?)' : 'Loading ...',
                 style: Theme.of(context)
                     .textTheme
                     .display1
@@ -128,7 +124,7 @@ class _HomeContentState extends State<HomeContent> {
         onDismissed: (direction) {
           if (!mounted) return;
           setState(() {
-            hasLoaded = false;
+            hasReloaded = false;
             selected5Questions.remove(question);
           });
           addMoreQuestion();
@@ -165,7 +161,7 @@ class _HomeContentState extends State<HomeContent> {
 
   void addMoreQuestion() async {
     await Future.delayed(Duration(seconds: waitDuration));
-    hasLoaded = true;
+    hasReloaded = true;
     if (selected5Questions.length < maxCardStack) {
       if (!mounted) return;
       setState(() {

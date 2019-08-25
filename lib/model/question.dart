@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 final questionsRemoteUrl =
     'https://raw.githubusercontent.com/alifgiant/satu-tanya/master/data/questions.json';
 
 class Question {
+  static final key = 'QUESTION';
+
   final String id;
   final String content;
   final String writer;
@@ -34,6 +38,20 @@ class Question {
       parsedJson['categoryId'],
       isLoved: parsedJson['isLoved'],
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'content': content,
+      'writer': writer,
+      'categoryId': categoryId,
+      'isLoved': isLoved,
+    };
+  }
+
+  static String toJsonOfList(List<Question> questions) {
+    return jsonEncode(questions.map((q) => q.toMap()).toList());
   }
 }
 

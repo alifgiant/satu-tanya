@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 final filtersRemoteUrl =
     'https://raw.githubusercontent.com/alifgiant/satu-tanya/master/data/filters.json';
 
 class Filter {
+  static final key = 'FILTER';
+
   final String id;
   final String name;
   bool isActive;
@@ -22,6 +26,18 @@ class Filter {
       parsedJson['name'],
       parsedJson['isActive'],
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'isActive': isActive,
+    };
+  }
+
+  static String toJsonOfList(List<Filter> filters) {
+    return jsonEncode(filters.map((q) => q.toMap()).toList());
   }
 }
 
