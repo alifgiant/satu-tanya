@@ -42,21 +42,21 @@ class PrefHelper {
     return null;
   }
 
-  static void storeConfigToDB(Config config) async {
+  static Future<void> storeConfigToDB(Config config) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String enconded = config.toJson();
     print(enconded);
     await prefs.setString(Config.key, enconded);
   }
 
-  static void storeFiltersToDB(List<Filter> filtersString) async {
+  static Future<void> storeFiltersToDB(List<Filter> filters) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String enconded = Filter.toJsonOfList(filtersString);
+    String enconded = Filter.toJsonOfList(filters);
     print(enconded);
     await prefs.setString(Filter.key, enconded);
   }
 
-  static void storeQuestionsToDB(List<Question> questions) async {
+  static Future<void> storeQuestionsToDB(List<Question> questions) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String enconded = Question.toJsonOfList(questions);
     print(enconded);

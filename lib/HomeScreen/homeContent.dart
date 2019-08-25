@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:satu_tanya/HomeScreen/cardContent.dart';
 import 'package:satu_tanya/HomeScreen/homeAction.dart';
 import 'package:satu_tanya/model/app_state.dart';
+import 'package:satu_tanya/model/config.dart';
+import 'package:satu_tanya/model/filter.dart';
 import 'package:satu_tanya/model/question.dart';
+import 'package:satu_tanya/repository/prefHelper.dart';
 import 'package:satu_tanya/repository/remoteRepoHelper.dart';
 
 final maxCardStack = 3;
@@ -21,7 +24,7 @@ class _HomeContentState extends State<HomeContent> {
   List<Question> selected5Questions;
   int currentStart = maxCardStack;
 
-  bool hasLoadDataToMemory = false;
+  bool hasDataInMemory = false;
   bool hasReloaded = true;
   bool showOnlyLoved = false;
 
@@ -29,22 +32,49 @@ class _HomeContentState extends State<HomeContent> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (!hasLoadDataToMemory) loadDataFromInternet();
+    if (!hasDataInMemory) loadDataToMemory();
     resetView();
   }
 
-  void loadDataFromInternet() async {
-    final config = await RemoteRepoHelper.getRemoteConfig();
+  Future<bool> shouldLoadNewData() async {
+    final remoteConfig = await RemoteRepoHelper.getRemoteConfig();
+    final savedConfig = await PrefHelper.loadConfigFromDB();
 
-    // load from internet
-    final filters = await RemoteRepoHelper.getFilters();
-    final questions = await RemoteRepoHelper.getQuestions();
+    if (remoteConfig.dbVersion != savedConfig?.dbVersion) {
+      await PrefHelper.storeConfigToDB(remoteConfig);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void loadDataToMemory() async {
+    List<Filter> filters = [];
+    List<Question> questions = [];
+
+    if (await shouldLoadNewData()) {
+      // read from internet
+      filters = await RemoteRepoHelper.getFilters();
+      questions = await RemoteRepoHelper.getQuestions();
+      saveDataToDB(filters, questions);
+    } else {
+      // read from db / pref
+      filters = await PrefHelper.loadFiltersFromDB();
+      questions = await PrefHelper.loadQuestionsFromDB();
+    }
+
+    // load to memory
     AppStateContainer.of(context).state.filters.addAll(filters);
     AppStateContainer.of(context).state.addQuestions(questions);
 
     // then
-    hasLoadDataToMemory = true;
+    hasDataInMemory = true;
     resetView();
+  }
+
+  void saveDataToDB(List<Filter> filters, List<Question> questions) async {
+    await PrefHelper.storeFiltersToDB(filters);
+    await PrefHelper.storeQuestionsToDB(questions);
   }
 
   void resetView() {
@@ -82,7 +112,7 @@ class _HomeContentState extends State<HomeContent> {
             ..add(Container(
               alignment: AlignmentDirectional.center,
               child: Text(
-                hasLoadDataToMemory ? 'Tanpa Tanya (?)' : 'Loading ...',
+                hasDataInMemory ? 'Tanpa Tanya (?)' : 'Loading ...',
                 style: Theme.of(context)
                     .textTheme
                     .display1
