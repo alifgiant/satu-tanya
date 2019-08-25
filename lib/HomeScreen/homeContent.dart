@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:satu_tanya/HomeScreen/cardContent.dart';
 import 'package:satu_tanya/HomeScreen/homeAction.dart';
 import 'package:satu_tanya/model/app_state.dart';
-import 'package:satu_tanya/model/config.dart';
 import 'package:satu_tanya/model/filter.dart';
 import 'package:satu_tanya/model/question.dart';
 import 'package:satu_tanya/repository/prefHelper.dart';
@@ -19,7 +18,7 @@ class HomeContent extends StatefulWidget {
   _HomeContentState createState() => _HomeContentState();
 }
 
-class _HomeContentState extends State<HomeContent> {
+class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
   List<Question> shuffledQuestions;
   List<Question> selected5Questions;
   int currentStart = maxCardStack;
@@ -27,6 +26,25 @@ class _HomeContentState extends State<HomeContent> {
   bool hasDataInMemory = false;
   bool hasReloaded = true;
   bool showOnlyLoved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      AppStateContainer.of(context).state.save();
+    }
+  }
 
   @override
   void didChangeDependencies() {
@@ -56,9 +74,11 @@ class _HomeContentState extends State<HomeContent> {
     filters = await PrefHelper.loadFiltersFromDB();
     questions = await PrefHelper.loadQuestionsFromDB();
     loadDataToAppState(filters, questions);
-    resetView();
 
-    hasDataInMemory = true;
+    if (filters.isNotEmpty) {
+      hasDataInMemory = true;
+      resetView();
+    }
 
     if (await shouldLoadNewData()) {
       // read from internet

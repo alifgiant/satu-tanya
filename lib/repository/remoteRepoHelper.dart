@@ -12,7 +12,6 @@ class RemoteRepoHelper {
       final jsonResponse = convert.jsonDecode(response.body) as List;
       final filters =
           jsonResponse.map((content) => Filter.fromJson(content)).toList();
-      // print(filters);
       return filters;
     } else {
       return null;
@@ -25,7 +24,6 @@ class RemoteRepoHelper {
       final jsonResponse = convert.jsonDecode(response.body) as List;
       final question =
           jsonResponse.map((content) => Question.fromJson(content)).toList();
-      // print(question);
       return question;
     } else {
       return null;
@@ -37,7 +35,6 @@ class RemoteRepoHelper {
     if (response.statusCode == 200) {
       final jsonResponse = convert.jsonDecode(response.body);
       final config = Config.fromJson(jsonResponse);
-      // print(config);
       return config;
     } else {
       return null;

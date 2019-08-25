@@ -11,7 +11,6 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Container();
     return AppStateContainer(
       state: appState,
       child: Scaffold(

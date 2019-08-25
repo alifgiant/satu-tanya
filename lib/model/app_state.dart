@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:satu_tanya/model/filter.dart';
 import 'package:satu_tanya/model/question.dart';
+import 'package:satu_tanya/repository/prefHelper.dart';
 
 class AppState {
   final List<Filter> filters = [];
@@ -20,6 +21,11 @@ class AppState {
   void clearData() {
     _questions.clear();
     filters.clear();
+  }
+
+  void save() {
+    PrefHelper.storeFiltersToDB(filters);
+    PrefHelper.storeQuestionsToDB(_questions);
   }
 }
 
