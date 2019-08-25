@@ -1,36 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:satu_tanya/model/question.dart';
 
-class CardContent extends StatefulWidget {
+class CardContent extends StatelessWidget {
   final Question question;
   final int scale;
+  final bool shouldShowAds;
 
   const CardContent({
     Key key,
     this.question,
     this.scale,
+    this.shouldShowAds,
   }) : super(key: key);
-
-  @override
-  _CardContentState createState() => _CardContentState();
-}
-
-class _CardContentState extends State<CardContent> {
-  bool shouldShowAds;
-
-  @override
-  void initState() {
-    super.initState();
-    shouldShowAds = false;
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    // logic to check ads
-    // shouldShowAds = false;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,15 +60,15 @@ class _CardContentState extends State<CardContent> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    '"${widget.question?.content ?? '...'}"',
+                    '"${question?.content ?? '...'}"',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontStyle: FontStyle.italic,
-                        fontSize: 24 - (3.0 * widget.scale)),
+                        fontSize: 24 - (3.0 * scale)),
                   ),
-                  if (widget.question.writer != null) Container(height: 12),
-                  if (widget.question.writer != null)
-                    Text('@${widget.question.writer}',
+                  if (question.writer != null) Container(height: 12),
+                  if (question.writer != null)
+                    Text('@${question.writer}',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.subhead),
                 ],

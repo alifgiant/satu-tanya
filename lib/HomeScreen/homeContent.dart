@@ -26,11 +26,13 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
   bool hasDataInMemory = false;
   bool hasReloaded = true;
   bool showOnlyLoved = false;
+  bool shouldShowAds = false;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    runAdsTimer();
   }
 
   @override
@@ -64,6 +66,13 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
     } else {
       return false;
     }
+  }
+
+  void runAdsTimer() async {
+    await Future.delayed(Duration(seconds: 2));
+
+    shouldShowAds = true;
+    print(shouldShowAds);
   }
 
   void loadDataToMemory() async {
@@ -170,6 +179,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
         child: CardContent(
           question: question,
           scale: scale,
+          shouldShowAds: shouldShowAds,
         ),
         height: MediaQuery.of(context).size.height * 0.78,
         width: MediaQuery.of(context).size.width * (0.9 - (0.1 * scale)),
