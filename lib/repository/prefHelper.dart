@@ -7,6 +7,7 @@ import 'package:satu_tanya/model/question.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefHelper {
+  // config pref
   static Future<Config> loadConfigFromDB() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(Config.key)) {
@@ -18,6 +19,14 @@ class PrefHelper {
     return null;
   }
 
+  static Future<void> storeConfigToDB(Config config) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String enconded = config.toJson();
+    await prefs.setString(Config.key, enconded);
+  }
+  // end config
+
+  // filter pref
   static Future<List<Filter>> loadFiltersFromDB() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(Filter.key)) {
@@ -30,6 +39,14 @@ class PrefHelper {
     return [];
   }
 
+  static Future<void> storeFiltersToDB(List<Filter> filters) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String enconded = Filter.toJsonOfList(filters);
+    await prefs.setString(Filter.key, enconded);
+  }
+  // end filter
+
+  // question pref
   static Future<List<Question>> loadQuestionsFromDB() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(Question.key)) {
@@ -42,21 +59,26 @@ class PrefHelper {
     return [];
   }
 
-  static Future<void> storeConfigToDB(Config config) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String enconded = config.toJson();
-    await prefs.setString(Config.key, enconded);
-  }
-
-  static Future<void> storeFiltersToDB(List<Filter> filters) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String enconded = Filter.toJsonOfList(filters);
-    await prefs.setString(Filter.key, enconded);
-  }
-
   static Future<void> storeQuestionsToDB(List<Question> questions) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String enconded = Question.toJsonOfList(questions);
     await prefs.setString(Question.key, enconded);
   }
+  // end question
+
+  // ads pref
+  static Future<bool> loadAdsState() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey('ads')) {
+      bool shouldShow = prefs.getBool('ads');
+      return shouldShow;
+    }
+    return false;
+  }
+
+  static Future<void> storeAdsState(bool shouldShow) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('ads', shouldShow);
+  }
+  // end ads
 }

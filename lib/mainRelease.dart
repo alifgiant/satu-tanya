@@ -4,7 +4,6 @@ import 'package:satu_tanya/model/appState.dart';
 
 void main() {
   runApp(MyApp());
-  
 }
 
 class MyApp extends StatelessWidget {

@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ads/ads.dart';
 import 'package:satu_tanya/HomeScreen/cardContent.dart';
+import 'package:satu_tanya/HomeScreen/emptyCard.dart';
 import 'package:satu_tanya/HomeScreen/homeAction.dart';
-import 'package:satu_tanya/model/app_state.dart';
+import 'package:satu_tanya/model/appState.dart';
 import 'package:satu_tanya/model/filter.dart';
 import 'package:satu_tanya/model/question.dart';
 import 'package:satu_tanya/repository/prefHelper.dart';
@@ -28,10 +30,16 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
   bool showOnlyLoved = false;
   bool shouldShowAds = false;
 
+  Ads admob;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
+    admob = Ads(AppState.adsAppId, testing: true);
+
+    // ads setting
     runAdsTimer();
   }
 
@@ -69,10 +77,18 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
   }
 
   void runAdsTimer() async {
-    await Future.delayed(Duration(seconds: 2));
+    if (shouldShowAds) return;
+    // if last time haven't see ads,
+    // force user to watch first
+    shouldShowAds = await PrefHelper.loadAdsState();
+    if (shouldShowAds) {
+      resetView();
+      return;
+    }
 
+    await Future.delayed(Duration(minutes: 30));
     shouldShowAds = true;
-    print(shouldShowAds);
+    PrefHelper.storeAdsState(shouldShowAds);
   }
 
   void loadDataToMemory() async {
@@ -146,16 +162,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
           );
         },
       ).toList()
-            ..add(Container(
-              alignment: AlignmentDirectional.center,
-              child: Text(
-                hasDataInMemory ? 'Tanpa Tanya (?)' : 'Loading ...',
-                style: Theme.of(context)
-                    .textTheme
-                    .display1
-                    .copyWith(color: Colors.white, letterSpacing: 3),
-              ),
-            )))
+            ..add(EmptyCard(hasDataInMemory: hasDataInMemory)))
           .reversed
           .toList()
             ..add(HomeAction(

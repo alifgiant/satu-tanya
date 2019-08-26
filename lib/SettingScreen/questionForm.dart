@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:satu_tanya/SettingScreen/categoryPicker.dart';
-import 'package:satu_tanya/model/app_state.dart';
+import 'package:satu_tanya/model/appState.dart';
 import 'package:satu_tanya/model/filter.dart';
 
 class QuestionForm extends StatelessWidget {

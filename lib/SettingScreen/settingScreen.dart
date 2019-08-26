@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:satu_tanya/SettingScreen/filterButtonGroup.dart';
 import 'package:satu_tanya/SettingScreen/questionForm.dart';
-import 'package:satu_tanya/model/app_state.dart';
+import 'package:satu_tanya/model/appState.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -67,7 +69,7 @@ class SettingScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          if (Theme.of(context).platform == TargetPlatform.android)
+          if (Platform.isAndroid)
             createButton(
               'Beri bintang di Play Store',
               SvgPicture.asset(
@@ -78,7 +80,7 @@ class SettingScreen extends StatelessWidget {
               ),
               Colors.redAccent,
             ),
-          if (Theme.of(context).platform == TargetPlatform.iOS)
+          if (Platform.isIOS)
             createButton(
               'Beri bintang di App Store',
               SvgPicture.asset(

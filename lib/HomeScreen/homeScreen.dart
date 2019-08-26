@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:satu_tanya/HomeScreen/homeContent.dart';
 import 'package:satu_tanya/SettingScreen/settingScreen.dart';
-import 'package:satu_tanya/model/app_state.dart';
+import 'package:satu_tanya/model/appState.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
