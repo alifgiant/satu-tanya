@@ -1,11 +1,12 @@
 import 'dart:math';
 
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ads/ads.dart';
 import 'package:satu_tanya/HomeScreen/cardContent.dart';
 import 'package:satu_tanya/HomeScreen/emptyCard.dart';
 import 'package:satu_tanya/HomeScreen/homeAction.dart';
+import 'package:satu_tanya/model/appAds.dart';
 import 'package:satu_tanya/model/appState.dart';
 import 'package:satu_tanya/model/filter.dart';
 import 'package:satu_tanya/model/question.dart';
@@ -30,14 +31,13 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
   bool showOnlyLoved = false;
   bool shouldShowAds = false;
 
-  Ads admob;
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    admob = Ads(AppState.adsAppId, testing: true);
+    AppAds.init(onAdsListener);
+    AppAds.ads.videoListener = videoListener;
 
     // ads setting
     runAdsTimer();
@@ -46,6 +46,9 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    // dispose ads
+    AppAds.dispose();
+
     super.dispose();
   }
 
@@ -89,6 +92,66 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
     await Future.delayed(Duration(minutes: 30));
     shouldShowAds = true;
     PrefHelper.storeAdsState(shouldShowAds);
+  }
+
+  void onAdsListener(MobileAdEvent event) {
+    switch (event) {
+      case MobileAdEvent.loaded:
+        print("An ad has loaded successfully in memory.");
+        break;
+      case MobileAdEvent.failedToLoad:
+        print("The ad failed to load into memory.");
+        break;
+      case MobileAdEvent.clicked:
+        print("The opened ad was clicked on.");
+        break;
+      case MobileAdEvent.impression:
+        print("The user is still looking at the ad. A new ad came up.");
+        break;
+      case MobileAdEvent.opened:
+        print("The Ad is now open.");
+        break;
+      case MobileAdEvent.leftApplication:
+        print("You've left the app after clicking the Ad.");
+        break;
+      case MobileAdEvent.closed:
+        print("You've closed the Ad and returned to the app.");
+        break;
+      default:
+        print("There's a 'new' MobileAdEvent?!");
+    }
+  }
+
+  void videoListener(RewardedVideoAdEvent event,
+      {String rewardType, int rewardAmount}) {
+    switch (event) {
+      case RewardedVideoAdEvent.loaded:
+        print("2.An ad has loaded successfully in memory.");
+        break;
+      case RewardedVideoAdEvent.failedToLoad:
+        print("2.The ad failed to load into memory.");
+        break;
+      case RewardedVideoAdEvent.opened:
+        print("2.The ad is now open.");
+        break;
+      case RewardedVideoAdEvent.leftApplication:
+        print("2.You've left the app after clicking the Ad.");
+        break;
+      case RewardedVideoAdEvent.closed:
+        print("2.You've closed the Ad and returned to the app.");
+        break;
+      case RewardedVideoAdEvent.rewarded:
+        print("2.The ad has sent a reward amount.");
+        break;
+      case RewardedVideoAdEvent.started:
+        print("2.You've just started playing the Video ad.");
+        break;
+      case RewardedVideoAdEvent.completed:
+        print("2.You've just finished playing the Video ad.");
+        break;
+      default:
+        print("2.There's a 'new' RewardedVideoAdEvent?!");
+    }
   }
 
   void loadDataToMemory() async {
@@ -187,6 +250,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
           question: question,
           scale: scale,
           shouldShowAds: shouldShowAds,
+          showAds: () => AppAds.ads.showVideoAd(testing: true),
         ),
         height: MediaQuery.of(context).size.height * 0.78,
         width: MediaQuery.of(context).size.width * (0.9 - (0.1 * scale)),
