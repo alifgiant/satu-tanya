@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ads/ads.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:satu_tanya/HomeScreen/cardContent.dart';
 import 'package:satu_tanya/HomeScreen/emptyCard.dart';
 import 'package:satu_tanya/HomeScreen/homeAction.dart';
+import 'package:satu_tanya/model/appAds.dart';
 import 'package:satu_tanya/model/appState.dart';
 import 'package:satu_tanya/model/filter.dart';
 import 'package:satu_tanya/model/question.dart';
@@ -37,7 +39,8 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    admob = Ads(AppState.adsAppId, testing: true);
+    // admob = Ads(AppState.adsAppId, testing: true);
+    AppAds.init();
 
     // ads setting
     runAdsTimer();
@@ -76,6 +79,11 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
     }
   }
 
+  void turnOffAdsTimer() {
+    shouldShowAds = false;
+    PrefHelper.storeAdsState(shouldShowAds);
+  }
+
   void runAdsTimer() async {
     if (shouldShowAds) return;
     // if last time haven't see ads,
@@ -89,6 +97,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
     await Future.delayed(Duration(minutes: 30));
     shouldShowAds = true;
     PrefHelper.storeAdsState(shouldShowAds);
+    resetView();
   }
 
   void loadDataToMemory() async {
@@ -132,6 +141,8 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
 
   void resetView() {
     if (!mounted) return;
+    if (!shouldShowAds) runAdsTimer();
+
     setState(() {
       currentStart = 0; // resetCounter
       shuffledQuestions = AppStateContainer.of(context)
@@ -187,6 +198,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
           question: question,
           scale: scale,
           shouldShowAds: shouldShowAds,
+          tryShowAds: tryShowAds,
         ),
         height: MediaQuery.of(context).size.height * 0.78,
         width: MediaQuery.of(context).size.width * (0.9 - (0.1 * scale)),
@@ -218,6 +230,25 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
         },
       );
     }
+  }
+
+  void tryShowAds() {
+    AppAds.ads?.showVideoAd(listener: (
+      event, {
+      String rewardType,
+      int rewardAmount,
+    }) {
+      switch (event) {
+        case RewardedVideoAdEvent.rewarded:
+          turnOffAdsTimer();
+          break;
+        case RewardedVideoAdEvent.closed:
+          resetView();
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   void loadOnlyLoved({bool toggle = false}) {

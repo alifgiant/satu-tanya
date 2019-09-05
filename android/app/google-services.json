@@ -1,0 +1,41 @@
+{
+  "project_info": {
+    "project_number": "402820167504",
+    "firebase_url": "https://satu-tanya.firebaseio.com",
+    "project_id": "satu-tanya",
+    "storage_bucket": "satu-tanya.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:402820167504:android:c5f3fae783096738",
+        "android_client_info": {
+          "package_name": "com.buahbatu.satu_tanya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "402820167504-sddup9hugm5o1tm71isafd9jndrtkphq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAqbOooaubLK2pB8WAPq8EB1s2jGQFASs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "402820167504-sddup9hugm5o1tm71isafd9jndrtkphq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-1611091195560104~3590637364"
+    }
+  ],
+  "configuration_version": "1"
+}
