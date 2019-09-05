@@ -2,9 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:satu_tanya/SettingScreen/categoryPicker.dart';
 import 'package:satu_tanya/model/appState.dart';
 import 'package:satu_tanya/model/filter.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-class QuestionForm extends StatelessWidget {
+class QuestionForm extends StatefulWidget {
+  @override
+  _QuestionFormState createState() => _QuestionFormState();
+}
+
+class _QuestionFormState extends State<QuestionForm> {
+  final TextEditingController _questionField = TextEditingController();
+
   final TextEditingController _categoryField = TextEditingController();
+
+  final TextEditingController _accountField = TextEditingController();
+
+  final DatabaseReference questionRef =
+      FirebaseDatabase.instance.reference().child('submit-questions');
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +28,7 @@ class QuestionForm extends StatelessWidget {
           TextField(
             minLines: 3,
             maxLines: 5,
+            controller: _questionField,
             decoration: InputDecoration(
                 hintText: 'Hal gila apa yang kamu lakukan bersama sahabat mu?',
                 isDense: true,
@@ -42,6 +56,7 @@ class QuestionForm extends StatelessWidget {
               Expanded(
                 child: TextField(
                   maxLines: 1,
+                  controller: _accountField,
                   decoration: InputDecoration(
                       prefixText: '@',
                       hintText: 'Akun instagram atau twitter',
@@ -54,13 +69,59 @@ class QuestionForm extends StatelessWidget {
               Container(width: 6),
               RaisedButton(
                 child: Text('Kirim'),
-                onPressed: () {},
+                onPressed: () => submitQuestion(context),
               ),
             ],
           )
         ],
       ),
     );
+  }
+
+  void submitQuestion(BuildContext context) async {
+    if (_questionField.text.isEmpty ||
+        _categoryField.text.isEmpty ||
+        _accountField.text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Silahkan isi form nya terlebih dahulu'),
+        backgroundColor: Colors.purple,
+        duration: Duration(seconds: 1),
+      ));
+      return;
+    }
+
+    final question = _questionField.text;
+    final account = _accountField.text;
+    final rawCategory = _categoryField.text;
+
+    final filters = AppStateContainer.of(context).state.filters;
+    final categoryIds = rawCategory
+        .split(', ')
+        .map((cat) => filters.where((fil) => fil.name == cat).first.id)
+        .join(',');
+
+    final newQuestion = questionRef.push();
+    final data = <String, String>{
+      'id': newQuestion.key,
+      'categoryId': categoryIds,
+      'content': question,
+      'writer': account
+    };
+
+    // upload
+    await newQuestion.set(data);
+
+    // clear field
+    _questionField.clear();
+    _categoryField.clear();
+    _accountField.clear();
+
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content:
+          Text('Pertanyaan terkirim!! Admin akan mereview pertanyaan mu 😎'),
+      backgroundColor: Colors.purple,
+      duration: Duration(seconds: 1),
+    ));
   }
 
   void showCategoryPicker(BuildContext context) async {

@@ -1,10 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:satu_tanya/HomeScreen/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:satu_tanya/model/appState.dart';
 
-void main() {
+void main() async {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final user = await auth.currentUser();
+  // auth
+  if (user == null) {
+    await auth.signInAnonymously();
+  }
   runApp(MyApp());
-  
 }
 
 class MyApp extends StatelessWidget {
