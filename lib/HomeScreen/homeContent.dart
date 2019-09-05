@@ -3,8 +3,6 @@ import 'dart:math';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ads/ads.dart';
-import 'package:firebase_admob/firebase_admob.dart';
 import 'package:satu_tanya/HomeScreen/cardContent.dart';
 import 'package:satu_tanya/HomeScreen/emptyCard.dart';
 import 'package:satu_tanya/HomeScreen/homeAction.dart';
@@ -100,66 +98,6 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
     shouldShowAds = true;
     PrefHelper.storeAdsState(shouldShowAds);
     resetView();
-  }
-
-  void onAdsListener(MobileAdEvent event) {
-    switch (event) {
-      case MobileAdEvent.loaded:
-        print("An ad has loaded successfully in memory.");
-        break;
-      case MobileAdEvent.failedToLoad:
-        print("The ad failed to load into memory.");
-        break;
-      case MobileAdEvent.clicked:
-        print("The opened ad was clicked on.");
-        break;
-      case MobileAdEvent.impression:
-        print("The user is still looking at the ad. A new ad came up.");
-        break;
-      case MobileAdEvent.opened:
-        print("The Ad is now open.");
-        break;
-      case MobileAdEvent.leftApplication:
-        print("You've left the app after clicking the Ad.");
-        break;
-      case MobileAdEvent.closed:
-        print("You've closed the Ad and returned to the app.");
-        break;
-      default:
-        print("There's a 'new' MobileAdEvent?!");
-    }
-  }
-
-  void videoListener(RewardedVideoAdEvent event,
-      {String rewardType, int rewardAmount}) {
-    switch (event) {
-      case RewardedVideoAdEvent.loaded:
-        print("2.An ad has loaded successfully in memory.");
-        break;
-      case RewardedVideoAdEvent.failedToLoad:
-        print("2.The ad failed to load into memory.");
-        break;
-      case RewardedVideoAdEvent.opened:
-        print("2.The ad is now open.");
-        break;
-      case RewardedVideoAdEvent.leftApplication:
-        print("2.You've left the app after clicking the Ad.");
-        break;
-      case RewardedVideoAdEvent.closed:
-        print("2.You've closed the Ad and returned to the app.");
-        break;
-      case RewardedVideoAdEvent.rewarded:
-        print("2.The ad has sent a reward amount.");
-        break;
-      case RewardedVideoAdEvent.started:
-        print("2.You've just started playing the Video ad.");
-        break;
-      case RewardedVideoAdEvent.completed:
-        print("2.You've just finished playing the Video ad.");
-        break;
-      default:
-        print("2.There's a 'new' RewardedVideoAdEvent?!");
-    }
   }
 
   void loadDataToMemory() async {
