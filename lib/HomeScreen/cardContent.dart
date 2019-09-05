@@ -5,14 +5,14 @@ class CardContent extends StatelessWidget {
   final Question question;
   final int scale;
   final bool shouldShowAds;
-  final VoidCallback showAds;
+  final VoidCallback tryShowAds;
 
   const CardContent({
     Key key,
     this.question,
     this.scale,
     this.shouldShowAds,
-    this.showAds,
+    this.tryShowAds,
   }) : super(key: key);
 
   @override
@@ -48,7 +48,7 @@ class CardContent extends StatelessWidget {
                       ],
                     ),
                     color: Colors.teal,
-                    onPressed: showAds,
+                    onPressed: tryShowAds,
                   ),
                 )
               ],
