@@ -122,6 +122,50 @@ class SettingScreen extends StatelessWidget {
                   bytesOfFile: bytes.buffer.asUint8List());
             },
           ),
+          Container(height: 32),
+          createButton(
+            'Aturan Bermain',
+            Icon(Icons.style, size: 28, color: Colors.white),
+            Colors.orangeAccent,
+            () => showModalBottomSheet(
+              context: context,
+              builder: (ctx) {
+                return Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: <Widget>[
+                      Text(
+                        'Aturan bermain',
+                        style: Theme.of(context).textTheme.title,
+                      ),
+                      Container(height: 20),
+                      Text('1. Baca dengan seksama pertanyaan yang muncul'),
+                      Container(height: 6),
+                      Text(
+                          '2. Jawab sejujur jujurnya, ijinkan teman mu untuk menggali informasi tambahan'),
+                      Container(height: 6),
+                      Text('3. Berikan HP mu kepada orang berikutnya'),
+                      Container(height: 6),
+                      Text('4. Swipe kartu untuk mengganti pertanyaan'),
+                      Container(height: 6),
+                      Text(
+                          '5. Jika tidak bisa menjawab berikan orang tersebut hukuman 😈'),
+                      Container(height: 20),
+                      Text(
+                        'Selamat bermain.. ',
+                        style: Theme.of(context).textTheme.subtitle,
+                      ),
+                      Text(
+                        'Roses are red, violet are blue. \nI ❤️ this, and I hope you guys are too.',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
