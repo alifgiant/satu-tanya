@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:launch_review/launch_review.dart';
 import 'package:satu_tanya/SettingScreen/filterButtonGroup.dart';
 import 'package:satu_tanya/SettingScreen/questionForm.dart';
 import 'package:satu_tanya/model/appState.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wc_flutter_share/wc_flutter_share.dart';
 
 class SettingScreen extends StatelessWidget {
   final AppState appState;
@@ -79,6 +82,11 @@ class SettingScreen extends StatelessWidget {
                 color: Colors.white,
               ),
               Colors.redAccent,
+              () => LaunchReview.launch(
+                writeReview: true,
+                androidAppId: "com.buahbatu.satu_tanya",
+                iOSAppId: "-",
+              ),
             ),
           if (Platform.isIOS)
             createButton(
@@ -90,19 +98,37 @@ class SettingScreen extends StatelessWidget {
                 color: Colors.white,
               ),
               Colors.blueGrey,
+              () => LaunchReview.launch(
+                writeReview: true,
+                androidAppId: "com.buahbatu.satu_tanya",
+                iOSAppId: "-",
+              ),
             ),
           Container(height: 12),
           createButton(
             'Bagikan aplikasi',
             Icon(Icons.share, size: 28, color: Colors.white),
             Colors.blueAccent,
+            () async {
+              final ByteData bytes =
+                  await rootBundle.load('assets/logo_satu_tanya_round2.png');
+              await WcFlutterShare.share(
+                  sharePopupTitle: 'Bagikan Aplikasi',
+                  subject: 'Aplikasi random paling asik',
+                  text:
+                      'Lagi ngumpul dan pengen diskusi random? Ayo download Satu Tanya dan rasakan keseruan bersama. \n\nAyo ikut keseruannya https://s.id/satu-tanya',
+                  fileName: 'logo.png',
+                  mimeType: 'image/png',
+                  bytesOfFile: bytes.buffer.asUint8List());
+            },
           ),
         ],
       ),
     );
   }
 
-  RaisedButton createButton(String text, Widget icon, Color color) {
+  RaisedButton createButton(
+      String text, Widget icon, Color color, VoidCallback onPressed) {
     return RaisedButton(
       padding: const EdgeInsets.symmetric(vertical: 10),
       color: color,
@@ -117,7 +143,7 @@ class SettingScreen extends StatelessWidget {
           ),
         ],
       ),
-      onPressed: () {},
+      onPressed: onPressed,
     );
   }
 }

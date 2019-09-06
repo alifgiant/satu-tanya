@@ -27,6 +27,8 @@ dependencies:
   ads: ^1.0.1
   firebase_database: ^3.0.7
   firebase_auth: ^0.14.0+5
+  launch_review: ^2.0.0
+  wc_flutter_share: ^0.1.1
 
 dev_dependencies:
   flutter_test:

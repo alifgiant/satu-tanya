@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:satu_tanya/model/question.dart';
+import 'package:wc_flutter_share/wc_flutter_share.dart';
 
 class HomeAction extends StatefulWidget {
   final Function loadOnlyLoved;
@@ -30,7 +32,17 @@ class _HomeActionState extends State<HomeAction> {
               color: Theme.of(context).primaryColor,
             ),
             backgroundColor: Colors.white,
-            onPressed: () {},
+            onPressed: () async {
+              final ByteData bytes =
+                  await rootBundle.load('assets/logo_satu_tanya_round2.png');
+              await WcFlutterShare.share(
+                  sharePopupTitle: 'Bagikan Pertanyaan',
+                  text:
+                      '"${widget.question.content}" oleh @${widget.question.writer}. \n\nAyo ikut keseruannya https://s.id/satu-tanya',
+                  fileName: 'logo.png',
+                  mimeType: 'image/png',
+                  bytesOfFile: bytes.buffer.asUint8List());
+            },
           ),
           Container(width: 16),
           RaisedButton(

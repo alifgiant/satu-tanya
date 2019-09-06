@@ -36,7 +36,7 @@ class Question {
       parsedJson['content'],
       parsedJson['writer'],
       parsedJson['categoryId'],
-      isLoved: parsedJson['isLoved'],
+      isLoved: parsedJson['isLoved'] ?? false,
     );
   }
 
