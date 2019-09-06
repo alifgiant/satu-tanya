@@ -72,3 +72,11 @@
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 
 ios/Flutter/flutter_export_environment.sh
+
+android/key.properties
+
+buahbatu-play.jks
+
+private_key.pepk
+
+android/app/release/
