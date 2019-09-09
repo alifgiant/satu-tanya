@@ -1,1 +1,41 @@
-[{ "id": "0", "categoryId": "1", "content": "Siapa orang paling kamu sayang?", "writer": "SatuTanya" }, { "id": "1", "categoryId": "1", "content": "Seberapa berharga uang bagi kamu?", "writer": "SatuTanya" }, { "id": "2", "categoryId": "2", "content": "Dimana saja daerah sensitif pasangan kamu?", "writer": "SatuTanya" }, { "id": "3", "categoryId": "1", "content": "Berapa banyak kamu habiskan uang hari ini?", "writer": "SatuTanya" }, { "id": "4", "categoryId": "3", "content": "Hal apa yang ingin kamu lupakan?", "writer": "SatuTanya" }, { "id": "5", "categoryId": "3", "content": "Mengapa kamu menyukai hobi mu sekarang?", "writer": "SatuTanya" }, { "id": "6", "categoryId": "0", "content": "Siapa artis paling jorok menurut mu?", "writer": "SatuTanya" }, { "id": "7", "categoryId": "4", "content": "Siapa tokoh kartun favorite mu?", "writer": "SatuTanya" }]
+[{
+    "categoryId": "3",
+    "content": "Siapa orang paling kamu sayang?",
+    "id": "0",
+    "writer": "SatuTanya"
+}, {
+    "categoryId": "1",
+    "content": "Seberapa berharga uang bagi kamu?",
+    "id": "1",
+    "writer": "SatuTanya"
+}, {
+    "categoryId": "2",
+    "content": "Dimana saja daerah sensitif pasangan kamu?",
+    "id": "2",
+    "writer": "SatuTanya"
+}, {
+    "categoryId": "1",
+    "content": "Berapa banyak kamu habiskan uang hari ini?",
+    "id": "3",
+    "writer": "SatuTanya"
+}, {
+    "categoryId": "1",
+    "content": "Hal apa yang ingin kamu lupakan?",
+    "id": "4",
+    "writer": "SatuTanya"
+}, {
+    "categoryId": "2",
+    "content": "Mengapa kamu menyukai hobi mu sekarang?",
+    "id": "5",
+    "writer": "SatuTanya"
+}, {
+    "categoryId": "0",
+    "content": "Siapa artis paling jorok menurut mu?",
+    "id": "6",
+    "writer": "SatuTanya"
+}, {
+    "categoryId": "0",
+    "content": "Siapa tokoh kartun favorite mu?",
+    "id": "7",
+    "writer": "SatuTanya"
+}]
