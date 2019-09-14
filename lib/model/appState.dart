@@ -8,10 +8,13 @@ class AppState {
   final List<Question> _questions = [];
 
   List<Question> filteredQuestions() {
-    return _questions
-        .where((question) => filters.any(
-            (filter) => filter.isActive && filter.id == question.categoryId))
-        .toList();
+    return _questions.where((question) => isFilterPassed(question)).toList();
+  }
+
+  bool isFilterPassed(Question question) {
+    final questionFilterIds = question.categoryId.split(',');
+    return filters.any(
+        (filter) => filter.isActive && questionFilterIds.contains(filter.id));
   }
 
   void addQuestions(Iterable<Question> iterable) {
