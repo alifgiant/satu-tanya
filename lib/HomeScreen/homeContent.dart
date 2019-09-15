@@ -125,6 +125,9 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
 
       // then
       resetView();
+
+      // show tutorial on new data
+      await Future.delayed(Duration(seconds: waitDuration));
       AppStateContainer.showTutorial(context);
     }
   }
