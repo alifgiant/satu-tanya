@@ -109,7 +109,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
     questions = await PrefHelper.loadQuestionsFromDB();
     loadDataToAppState(filters, questions);
 
-    if (filters.isNotEmpty) {
+    if (filters.isNotEmpty && questions.isNotEmpty) {
       hasDataInMemory = true;
       resetView();
     }
@@ -125,6 +125,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
 
       // then
       resetView();
+      AppStateContainer.showTutorial(context);
     }
   }
 

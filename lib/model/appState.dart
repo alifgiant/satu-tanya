@@ -44,4 +44,45 @@ class AppStateContainer extends InheritedWidget {
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => true;
+
+  static void showTutorial(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              Text(
+                'Aturan bermain',
+                style: Theme.of(context).textTheme.title,
+              ),
+              Container(height: 20),
+              Text('1. Baca dengan seksama pertanyaan yang muncul'),
+              Container(height: 6),
+              Text(
+                  '2. Jawab sejujur jujurnya secara lisan'),
+              Container(height: 6),
+              Text('3. Persilahkan teman mu untuk menggali informasi tambahan secara bergantian'),
+              Container(height: 6),
+              Text('4. Berikan HP mu kepada orang berikutnya, lalu swipe kartu untuk mengganti pertanyaan'),
+              Container(height: 6),
+              Text(
+                  '5. Jika menolak menjawab tanya, berikan orang tersebut hukuman 😈'),
+              Container(height: 20),
+              Text(
+                'Selamat bermain.. ',
+                style: Theme.of(context).textTheme.subtitle,
+              ),
+              Text(
+                'Roses are red, violet are blue. \nI ❤️ this, and I hope you guys are too.',
+                style: Theme.of(context).textTheme.caption,
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
