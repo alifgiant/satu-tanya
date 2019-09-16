@@ -71,7 +71,9 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
     final remoteConfig = await RemoteRepoHelper.getRemoteConfig();
     final savedConfig = await PrefHelper.loadConfigFromDB();
 
-    if (remoteConfig.dbVersion != savedConfig?.dbVersion) {
+    final isDataNotExist =
+        AppStateContainer.of(context).state.filteredQuestions().isEmpty;
+    if (remoteConfig.dbVersion != savedConfig?.dbVersion || isDataNotExist) {
       await PrefHelper.storeConfigToDB(remoteConfig);
       return true;
     } else {

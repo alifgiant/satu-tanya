@@ -32,10 +32,10 @@ class Question {
 
   factory Question.fromJson(Map<String, dynamic> parsedJson) {
     return Question(
-      parsedJson['id'],
+      parsedJson['id'].toString(),
       parsedJson['content'],
       parsedJson['writer'],
-      parsedJson['categoryId'],
+      parsedJson['categoryId'].toString(),
       isLoved: parsedJson['isLoved'] ?? false,
     );
   }
