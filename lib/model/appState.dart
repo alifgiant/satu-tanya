@@ -4,8 +4,10 @@ import 'package:satu_tanya/model/question.dart';
 import 'package:satu_tanya/repository/prefHelper.dart';
 
 class AppState {
-  final List<Filter> filters = [];
+  final List<Filter> _filters = [];
   final List<Question> _questions = [];
+
+  List<Filter> get filters => _filters;
 
   List<Question> filteredQuestions() {
     return _questions.where((question) => isFilterPassed(question)).toList();
@@ -13,21 +15,35 @@ class AppState {
 
   bool isFilterPassed(Question question) {
     final questionFilterIds = question.categoryId.split(',');
-    return filters.any(
+    return _filters.any(
         (filter) => filter.isActive && questionFilterIds.contains(filter.id));
   }
 
-  void addQuestions(Iterable<Question> iterable) {
-    _questions.addAll(iterable);
+  void setQuestions(Iterable<Question> iterable) {
+    if (_questions.isEmpty) {
+      _questions.addAll(iterable);
+      return;
+    } else {
+      _questions.setAll(0, iterable);
+    }
+  }
+
+  void setFilters(Iterable<Filter> iterable) {
+    if (_filters.isEmpty) {
+      _filters.addAll(iterable);
+      return;
+    } else {
+      _filters.setAll(0, iterable);
+    }
   }
 
   void clearData() {
     _questions.clear();
-    filters.clear();
+    _filters.clear();
   }
 
   void save() {
-    PrefHelper.storeFiltersToDB(filters);
+    PrefHelper.storeFiltersToDB(_filters);
     PrefHelper.storeQuestionsToDB(_questions);
   }
 }
@@ -61,15 +77,13 @@ class AppStateContainer extends InheritedWidget {
               Container(height: 20),
               Text('1. Baca dengan seksama pertanyaan yang muncul'),
               Container(height: 6),
-              Text(
-                  '2. Jawab sejujur jujurnya secara lisan'),
+              Text('2. Jawab sejujur jujurnya secara lisan'),
               Container(height: 6),
               Text('3. Persilahkan teman mu untuk menggali informasi tambahan secara bergantian'),
               Container(height: 6),
               Text('4. Berikan HP mu kepada orang berikutnya, lalu swipe kartu untuk mengganti pertanyaan'),
               Container(height: 6),
-              Text(
-                  '5. Jika menolak menjawab tanya, berikan orang tersebut hukuman 😈'),
+              Text('5. Jika menolak menjawab tanya, berikan orang tersebut hukuman 😈'),
               Container(height: 20),
               Text(
                 'Selamat bermain.. ',

@@ -136,8 +136,8 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
 
   void loadDataToAppState(List<Filter> filters, List<Question> questions) {
     // load to memory
-    AppStateContainer.of(context).state.filters.addAll(filters);
-    AppStateContainer.of(context).state.addQuestions(questions);
+    AppStateContainer.of(context).state.setFilters(filters);
+    AppStateContainer.of(context).state.setQuestions(questions);
   }
 
   void saveDataToDB(List<Filter> filters, List<Question> questions) async {
