@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:satu_tanya/HomeScreen/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:satu_tanya/model/appState.dart';
@@ -16,6 +17,10 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
         title: 'Satu Tanya',
         theme: ThemeData(
