@@ -150,7 +150,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
     if (!shouldShowAds) runAdsTimer();
 
     setState(() {
-      currentStart = 0; // resetCounter
+      currentStart = maxCardStack; // resetCounter
       shuffledQuestions = AppStateContainer.of(context)
           .state
           .filteredQuestions()
