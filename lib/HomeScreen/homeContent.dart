@@ -109,7 +109,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
       return;
     }
 
-    await Future.delayed(Duration(minutes: 30));
+    await Future.delayed(Duration(minutes: 15));
     shouldShowAds = true;
     PrefHelper.storeAdsState(shouldShowAds);
     resetView();
