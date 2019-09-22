@@ -30,7 +30,7 @@ class _QuestionFormState extends State<QuestionForm> {
             maxLines: 5,
             controller: _questionField,
             decoration: InputDecoration(
-                hintText: 'Hal gila apa yang kamu lakukan bersama sahabat mu?',
+                hintText: 'Ajukan tanya mu disini...',
                 isDense: true,
                 border: InputBorder.none,
                 fillColor: Colors.white,
@@ -44,7 +44,7 @@ class _QuestionFormState extends State<QuestionForm> {
               controller: _categoryField,
               decoration: InputDecoration(
                   enabled: false,
-                  hintText: 'Kategori',
+                  hintText: 'Pilih Kategori',
                   isDense: true,
                   border: InputBorder.none,
                   fillColor: Colors.white,
@@ -59,7 +59,7 @@ class _QuestionFormState extends State<QuestionForm> {
                   controller: _accountField,
                   decoration: InputDecoration(
                       prefixText: '@',
-                      hintText: 'Akun instagram atau twitter',
+                      hintText: 'Akun Social Media',
                       isDense: true,
                       border: InputBorder.none,
                       fillColor: Colors.white,
@@ -100,28 +100,43 @@ class _QuestionFormState extends State<QuestionForm> {
         .map((cat) => filters.where((fil) => fil.name == cat).first.id)
         .join(',');
 
-    final newQuestion = questionRef.push();
-    final data = <String, String>{
-      'id': newQuestion.key,
-      'categoryId': categoryIds,
-      'content': question,
-      'writer': account
-    };
+    try {
+      // show loading
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (ctx) => Container(
+          child: Center(child: CircularProgressIndicator()),
+        ),
+      );
 
-    // upload
-    await newQuestion.set(data);
+      final newQuestion = questionRef.push();
+      final data = <String, String>{
+        'id': newQuestion.key,
+        'categoryId': categoryIds,
+        'content': question,
+        'writer': account
+      };
 
-    // clear field
-    _questionField.clear();
-    _categoryField.clear();
-    _accountField.clear();
+      // upload
+      await newQuestion.set(data);
 
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content:
-          Text('Pertanyaan terkirim!! Admin akan mereview pertanyaan mu 😎'),
-      backgroundColor: Colors.purple,
-      duration: Duration(seconds: 1),
-    ));
+      // clear field
+      _questionField.clear();
+      _categoryField.clear();
+      _accountField.clear();
+    } finally {
+      // unshow loading
+      Navigator.of(context).pop();
+
+      // show snack bar
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content:
+            Text('Pertanyaan terkirim!! Admin akan mereview pertanyaan mu 😎'),
+        backgroundColor: Colors.purple,
+        duration: Duration(seconds: 1),
+      ));
+    }
   }
 
   void showCategoryPicker(BuildContext context) async {
