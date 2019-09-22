@@ -29,8 +29,8 @@ class _FilterButtonGroupState extends State<FilterButtonGroup> {
             style: TextStyle(color: pickColor(filters[idx].isActive)),
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: pickColor(filters[idx].isActive), width: 3),
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(color: pickColor(filters[idx].isActive), width: 2),
           ),
           onPressed: () => switchState(filters, idx),
         ),

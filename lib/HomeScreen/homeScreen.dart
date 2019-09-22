@@ -16,11 +16,8 @@ class HomeScreen extends StatelessWidget {
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
       title: Text(
-        'Satu Tanya',
-        style: new TextStyle(
-          letterSpacing: 3,
-          fontWeight: FontWeight.bold,
-        ),
+        'SatuTanya',
+        style: new TextStyle(fontWeight: FontWeight.bold, letterSpacing: 2),
       ),
       elevation: 0,
       centerTitle: true,

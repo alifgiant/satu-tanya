@@ -70,9 +70,12 @@ class _HomeActionState extends State<HomeAction> {
             Container(
               width: MediaQuery.of(context).size.width * 0.8,
               child: RaisedButton(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
                 child: Text('Bagikan', style: TextStyle(color: Colors.white)),
-                color: Colors.blueAccent,
+                color: Theme.of(context).primaryColor,
                 onPressed: shareQuestion,
               ),
             )

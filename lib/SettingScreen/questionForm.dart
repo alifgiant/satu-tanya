@@ -28,51 +28,82 @@ class _QuestionFormState extends State<QuestionForm> {
       child: Column(
         children: <Widget>[
           TextField(
+            style: TextStyle(color: Colors.white),
             minLines: 3,
             maxLines: 5,
             controller: _questionField,
             decoration: InputDecoration(
                 hintText: 'Ajukan tanya mu disini...',
                 isDense: true,
-                border: InputBorder.none,
-                fillColor: Colors.white,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                fillColor: Colors.white30,
                 filled: true),
           ),
           Container(height: 6),
           InkWell(
             onTap: () => showCategoryPicker(context),
             child: TextField(
+              style: TextStyle(color: Colors.white),
               maxLines: 1,
               controller: _categoryField,
               decoration: InputDecoration(
-                  enabled: false,
-                  hintText: 'Pilih Kategori',
-                  isDense: true,
-                  border: InputBorder.none,
-                  fillColor: Colors.white,
-                  filled: true),
+                enabled: false,
+                hintText: 'Pilih Kategori',
+                isDense: true,
+                disabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                fillColor: Colors.white30,
+                filled: true,
+              ),
             ),
           ),
+          Container(height: 6),
           Row(
             children: <Widget>[
               Expanded(
                 child: TextField(
+                  style: TextStyle(color: Colors.white),
                   maxLines: 1,
                   controller: _accountField,
                   decoration: InputDecoration(
-                      prefixText: '@',
-                      hintText: 'Akun Social Media',
-                      isDense: true,
-                      border: InputBorder.none,
-                      fillColor: Colors.white,
-                      filled: true),
+                    prefixText: '@',
+                    hintText: 'Akun Social Media',
+                    isDense: true,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    fillColor: Colors.white30,
+                    filled: true,
+                  ),
                 ),
               ),
               Container(width: 6),
               RaisedButton(
-                child: Text('Kirim'),
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  'KIRIM',
+                  style: TextStyle(color: Theme.of(context).primaryColor, letterSpacing: 2),
+                ),
+                color: Colors.white,
                 onPressed: () => submitQuestion(context),
-              ),
+              )
             ],
           )
         ],

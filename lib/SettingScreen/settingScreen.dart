@@ -41,10 +41,7 @@ class SettingScreen extends StatelessWidget {
     return AppBar(
       title: Text(
         'Pengaturan',
-        style: TextStyle(
-          letterSpacing: 3,
-          fontWeight: FontWeight.bold,
-        ),
+        style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 2),
       ),
       leading: IconButton(
         icon: Icon(Icons.close),
@@ -81,7 +78,7 @@ class SettingScreen extends StatelessWidget {
                 height: 28,
                 color: Colors.white,
               ),
-              Colors.redAccent,
+              Color.fromRGBO(67, 177, 50, 1),
               () => LaunchReview.launch(
                 writeReview: true,
                 androidAppId: "com.buahbatu.satu_tanya",
@@ -97,7 +94,7 @@ class SettingScreen extends StatelessWidget {
                 height: 28,
                 color: Colors.white,
               ),
-              Colors.blueGrey,
+              Color.fromRGBO(67, 177, 50, 1),
               () => LaunchReview.launch(
                 writeReview: true,
                 androidAppId: "com.buahbatu.satu_tanya",
@@ -107,8 +104,8 @@ class SettingScreen extends StatelessWidget {
           Container(height: 12),
           createButton(
             'Bagikan aplikasi',
-            Icon(Icons.share, size: 28, color: Colors.white),
-            Colors.blueAccent,
+            Icon(Icons.share, size: 28, color: Theme.of(context).primaryColor),
+            Colors.white,
             () async {
               final ByteData bytes =
                   await rootBundle.load('assets/logo_satu_tanya_round2.png');
@@ -121,6 +118,7 @@ class SettingScreen extends StatelessWidget {
                   mimeType: 'image/png',
                   bytesOfFile: bytes.buffer.asUint8List());
             },
+            textColor: Theme.of(context).primaryColor,
           ),
           Container(height: 32),
           createButton(
@@ -135,19 +133,22 @@ class SettingScreen extends StatelessWidget {
   }
 
   RaisedButton createButton(
-      String text, Widget icon, Color color, VoidCallback onPressed) {
+    String text,
+    Widget icon,
+    Color color,
+    VoidCallback onPressed, {
+    Color textColor = Colors.white,
+  }) {
     return RaisedButton(
       padding: const EdgeInsets.symmetric(vertical: 10),
       color: color,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           icon,
           Container(width: 16),
-          Text(
-            text,
-            style: TextStyle(color: Colors.white),
-          ),
+          Text(text, style: TextStyle(color: textColor)),
         ],
       ),
       onPressed: onPressed,

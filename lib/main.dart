@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Satu Tanya',
         theme: ThemeData(
-          primaryColor: Color.fromRGBO(36, 48, 80, 1),
+          primaryColor: Color.fromRGBO(46, 122, 236, 1),
           accentColor: Color.fromRGBO(255, 55, 95, 1),
         ),
         home: AppStateContainer(
