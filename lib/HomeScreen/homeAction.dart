@@ -9,10 +9,12 @@ import 'package:wc_flutter_share/wc_flutter_share.dart';
 class HomeAction extends StatefulWidget {
   final Function loadOnlyLoved;
   final Question question;
+  final bool shouldShowAds;
 
   const HomeAction(
     this.loadOnlyLoved,
-    this.question, {
+    this.question,
+    this.shouldShowAds, {
     Key key,
   }) : super(key: key);
 
@@ -60,7 +62,7 @@ class _HomeActionState extends State<HomeAction> {
                   child: CardContent(
                     question: widget.question,
                     scale: 0,
-                    shouldShowAds: false,
+                    shouldShowAds: widget.shouldShowAds,
                     isWaterMarkOn: true,
                   ),
                   height: MediaQuery.of(context).size.width,

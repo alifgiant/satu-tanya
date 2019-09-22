@@ -109,7 +109,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
       return;
     }
 
-    await Future.delayed(Duration(minutes: 15));
+    await Future.delayed(Duration(minutes: 20));
     shouldShowAds = true;
     PrefHelper.storeAdsState(shouldShowAds);
     resetView();
@@ -194,6 +194,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
         ..add(HomeAction(
           loadOnlyLoved,
           (selected5Questions.length > 0 ? selected5Questions[0] : null),
+          shouldShowAds,
         )),
     );
   }
