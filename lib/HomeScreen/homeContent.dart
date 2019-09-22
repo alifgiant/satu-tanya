@@ -8,10 +8,12 @@ import 'package:satu_tanya/HomeScreen/emptyCard.dart';
 import 'package:satu_tanya/HomeScreen/homeAction.dart';
 import 'package:satu_tanya/model/appAds.dart';
 import 'package:satu_tanya/model/appState.dart';
+import 'package:satu_tanya/model/config.dart';
 import 'package:satu_tanya/model/filter.dart';
 import 'package:satu_tanya/model/question.dart';
 import 'package:satu_tanya/repository/prefHelper.dart';
 import 'package:satu_tanya/repository/remoteRepoHelper.dart';
+import 'dart:io';
 
 final maxCardStack = 3;
 final waitDuration = 1;
@@ -30,6 +32,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
   bool hasReloaded = true;
   bool showOnlyLoved = false;
   bool shouldShowAds = false;
+  bool shouldShowReload = false;
 
   @override
   void initState() {
@@ -68,15 +71,21 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
   }
 
   Future<bool> shouldLoadNewData() async {
-    final remoteConfig = await RemoteRepoHelper.getRemoteConfig();
     final savedConfig = await PrefHelper.loadConfigFromDB();
-
     final isDataNotExist =
         AppStateContainer.of(context).state.filteredQuestions().isEmpty;
 
-    if (remoteConfig.dbVersion != savedConfig?.dbVersion ||
-        remoteConfig.appBuildNumber > savedConfig.appBuildNumber ||
-        isDataNotExist) {
+    Config remoteConfig;
+    try {
+      remoteConfig = await RemoteRepoHelper.getRemoteConfig();
+    } on SocketException catch (_) {
+      if (isDataNotExist) shouldShowReload = true;
+      return false;
+    }
+
+    if (isDataNotExist ||
+        remoteConfig.dbVersion != savedConfig?.dbVersion ||
+        remoteConfig.appBuildNumber != savedConfig?.appBuildNumber) {
       await PrefHelper.storeConfigToDB(remoteConfig);
       return true;
     } else {
@@ -113,6 +122,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
     filters = await PrefHelper.loadFiltersFromDB();
     questions = await PrefHelper.loadQuestionsFromDB();
     loadDataToAppState(filters, questions);
+    shouldShowReload = false;
 
     if (filters.isNotEmpty && questions.isNotEmpty) {
       hasDataInMemory = true;
@@ -134,6 +144,9 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
       // show tutorial on new data
       await Future.delayed(Duration(seconds: waitDuration));
       AppStateContainer.showTutorial(context);
+    } else {
+      // then
+      resetView();
     }
   }
 
@@ -166,31 +179,39 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    int idx = 0;
+    final content = (buildCardList()
+          ..add(EmptyCard(
+            hasDataInMemory: hasDataInMemory,
+            shouldShowReload: shouldShowReload,
+            reloadAction: loadDataToMemory,
+          )))
+        .reversed
+        .toList();
     return Stack(
       alignment: AlignmentDirectional.center,
-      children: (selected5Questions.map<Widget>(
-        (question) {
-          final i = idx++;
-          return Positioned(
-            bottom: 20 + (20.0 * i),
-            child: buildCard(
-                context: context,
-                question: question,
-                scale: i,
-                isActive: i == 0 && hasReloaded),
-          );
-        },
-      ).toList()
-            ..add(EmptyCard(hasDataInMemory: hasDataInMemory)))
-          .reversed
-          .toList()
-            ..add(HomeAction(
-                loadOnlyLoved,
-                (selected5Questions.length > 0
-                    ? selected5Questions[0]
-                    : null))),
+      children: content
+        ..add(HomeAction(
+          loadOnlyLoved,
+          (selected5Questions.length > 0 ? selected5Questions[0] : null),
+        )),
     );
+  }
+
+  List<Widget> buildCardList() {
+    int idx = 0;
+    return selected5Questions.map<Widget>(
+      (question) {
+        final i = idx++;
+        return Positioned(
+          bottom: 20 + (20.0 * i),
+          child: buildCard(
+              context: context,
+              question: question,
+              scale: i,
+              isActive: i == 0 && hasReloaded),
+        );
+      },
+    ).toList();
   }
 
   Widget buildCard({

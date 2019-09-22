@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
 class EmptyCard extends StatefulWidget {
-  const EmptyCard({Key key, @required this.hasDataInMemory}) : super(key: key);
+  const EmptyCard(
+      {Key key,
+      @required this.hasDataInMemory,
+      @required this.shouldShowReload,
+      @required this.reloadAction})
+      : super(key: key);
 
   final bool hasDataInMemory;
+  final bool shouldShowReload;
+  final VoidCallback reloadAction;
 
   @override
   _EmptyCardState createState() => _EmptyCardState();
@@ -46,15 +53,40 @@ class _EmptyCardState extends State<EmptyCard>
   Widget build(BuildContext context) {
     return Container(
       alignment: AlignmentDirectional.center,
-      child: AnimatedBuilder(
-        animation: animation,
-        builder: (context, child) => Text(
-          widget.hasDataInMemory ? 'Tanpa Tanya (?)' : getText(animation.value),
+      child:
+          widget.shouldShowReload ? buildReloadScreen() : buildAnimatedScreen(),
+    );
+  }
+
+  Widget buildReloadScreen() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          'Gagal Mengambil Data 😫',
           style: Theme.of(context)
               .textTheme
-              .display1
+              .title
               .copyWith(color: Colors.white, letterSpacing: 3),
         ),
+        Container(height: 16),
+        RaisedButton(
+          child: Text('Coba Lagi'),
+          onPressed: widget.reloadAction,
+        )
+      ],
+    );
+  }
+
+  Widget buildAnimatedScreen() {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) => Text(
+        widget.hasDataInMemory ? 'Tanpa Tanya (?)' : getText(animation.value),
+        style: Theme.of(context)
+            .textTheme
+            .display1
+            .copyWith(color: Colors.white, letterSpacing: 3),
       ),
     );
   }
