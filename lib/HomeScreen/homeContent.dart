@@ -33,6 +33,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
   bool showOnlyLoved = false;
   bool shouldShowAds = false;
   bool shouldShowReload = false;
+  bool isLoadingShowed = false;
 
   @override
   void initState() {
@@ -263,6 +264,25 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
   }
 
   void tryShowAds() {
+    // show loading
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => WillPopScope(
+        onWillPop: () async {
+          isLoadingShowed = false;
+          if (shouldShowAds)
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text('Silahkan tunggu videonya sampai selesai 😖'),
+              backgroundColor: Colors.purple,
+            ));
+          return true;
+        },
+        child: Center(child: CircularProgressIndicator()),
+      ),
+    );
+    isLoadingShowed = true;
+
     AppAds.ads?.showVideoAd(listener: (
       event, {
       String rewardType,
@@ -273,6 +293,7 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
           turnOffAdsTimer();
           break;
         case RewardedVideoAdEvent.closed:
+          if (isLoadingShowed) Navigator.of(context).pop();
           resetView();
           break;
         default:

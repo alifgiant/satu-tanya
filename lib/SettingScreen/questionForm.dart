@@ -19,6 +19,8 @@ class _QuestionFormState extends State<QuestionForm> {
   final DatabaseReference questionRef =
       FirebaseDatabase.instance.reference().child('submit-questions');
 
+  bool isLoadingShowed = false;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -105,10 +107,15 @@ class _QuestionFormState extends State<QuestionForm> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (ctx) => Container(
+        builder: (ctx) => WillPopScope(
+          onWillPop: () async {
+            isLoadingShowed = false;
+            return true;
+          },
           child: Center(child: CircularProgressIndicator()),
         ),
       );
+      isLoadingShowed = true;
 
       final newQuestion = questionRef.push();
       final data = <String, String>{
@@ -127,7 +134,7 @@ class _QuestionFormState extends State<QuestionForm> {
       _accountField.clear();
     } finally {
       // unshow loading
-      Navigator.of(context).pop();
+      if (isLoadingShowed) Navigator.of(context).pop();
 
       // show snack bar
       Scaffold.of(context).showSnackBar(SnackBar(
