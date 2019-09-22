@@ -1,20 +1,87 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:satu_tanya/HomeScreen/cardContent.dart';
 import 'package:satu_tanya/model/question.dart';
+import 'dart:ui' as ui show ImageByteFormat, Image;
 import 'package:wc_flutter_share/wc_flutter_share.dart';
 
 class HomeAction extends StatefulWidget {
   final Function loadOnlyLoved;
   final Question question;
 
-  const HomeAction(this.loadOnlyLoved, this.question, {Key key})
-      : super(key: key);
+  const HomeAction(
+    this.loadOnlyLoved,
+    this.question, {
+    Key key,
+  }) : super(key: key);
 
   @override
   _HomeActionState createState() => _HomeActionState();
 }
 
 class _HomeActionState extends State<HomeAction> {
+  GlobalKey _globalKey = new GlobalKey();
+  void shareQuestion() async {
+    try {
+      RenderRepaintBoundary boundary =
+          _globalKey.currentContext.findRenderObject();
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      var pngBytes = byteData.buffer.asUint8List();
+      await WcFlutterShare.share(
+        sharePopupTitle: 'Bagikan Pertanyaan',
+        text: 'Ayo ikut keseruannya https://s.id/satu-tanya',
+        fileName: 'satu-tanya.png',
+        mimeType: 'image/png',
+        bytesOfFile: pngBytes,
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void showBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return ListView(
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 8),
+          children: <Widget>[
+            RepaintBoundary(
+              key: _globalKey,
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Container(
+                  child: CardContent(
+                    question: widget.question,
+                    scale: 0,
+                    shouldShowAds: false,
+                  ),
+                  height: MediaQuery.of(context).size.width,
+                ),
+              ),
+            ),
+            Container(height: 6),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: RaisedButton(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Text('Bagikan', style: TextStyle(color: Colors.white)),
+                color: Colors.blueAccent,
+                onPressed: shareQuestion,
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -32,17 +99,7 @@ class _HomeActionState extends State<HomeAction> {
               color: Theme.of(context).primaryColor,
             ),
             backgroundColor: Colors.white,
-            onPressed: () async {
-              final ByteData bytes =
-                  await rootBundle.load('assets/logo_satu_tanya_round2.png');
-              await WcFlutterShare.share(
-                  sharePopupTitle: 'Bagikan Pertanyaan',
-                  text:
-                      '"${widget.question.content}" oleh @${widget.question.writer}. \n\nAyo ikut keseruannya https://s.id/satu-tanya',
-                  fileName: 'logo.png',
-                  mimeType: 'image/png',
-                  bytesOfFile: bytes.buffer.asUint8List());
-            },
+            onPressed: showBottomSheet,
           ),
           Container(width: 16),
           RaisedButton(
