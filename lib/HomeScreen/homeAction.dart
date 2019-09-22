@@ -61,6 +61,7 @@ class _HomeActionState extends State<HomeAction> {
                     question: widget.question,
                     scale: 0,
                     shouldShowAds: false,
+                    isWaterMarkOn: true,
                   ),
                   height: MediaQuery.of(context).size.width,
                 ),

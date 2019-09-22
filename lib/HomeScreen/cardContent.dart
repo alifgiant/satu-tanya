@@ -6,6 +6,7 @@ class CardContent extends StatelessWidget {
   final int scale;
   final bool shouldShowAds;
   final VoidCallback tryShowAds;
+  final bool isWaterMarkOn;
 
   const CardContent({
     Key key,
@@ -13,6 +14,7 @@ class CardContent extends StatelessWidget {
     this.scale,
     this.shouldShowAds,
     this.tryShowAds,
+    this.isWaterMarkOn = false,
   }) : super(key: key);
 
   @override
@@ -75,6 +77,14 @@ class CardContent extends StatelessWidget {
                         style: Theme.of(context).textTheme.subhead),
                 ],
               ),
+            ),
+          ),
+        if (isWaterMarkOn)
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              'SatuTanya tersedia di Playstore',
+              style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey),
             ),
           )
       ],
