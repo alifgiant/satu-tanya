@@ -1,5 +1,6 @@
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:package_info/package_info.dart';
 import 'package:satu_tanya/model/config.dart';
 
 import 'package:satu_tanya/model/filter.dart';
@@ -33,8 +34,10 @@ class RemoteRepoHelper {
   static Future<Config> getRemoteConfig() async {
     final response = await http.get(configRemoteUrl);
     if (response.statusCode == 200) {
+      final realBuildNumber = (await PackageInfo.fromPlatform()).buildNumber;
       final jsonResponse = convert.jsonDecode(response.body);
-      final config = Config.fromJson(jsonResponse);
+      final config = Config.fromJson(jsonResponse)
+          .copyWith(appBuildNumber: int.tryParse(realBuildNumber));
       return config;
     } else {
       return null;

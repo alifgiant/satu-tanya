@@ -5,22 +5,34 @@ final configRemoteUrl =
 
 class Config {
   static final key = 'CONFIG';
-  
+
   final int dbVersion;
+  final int appBuildNumber;
 
-  Config(this.dbVersion);
+  Config(this.dbVersion, this.appBuildNumber);
 
-  Config copyWith({String dbVersion}) {
-    return Config(dbVersion == null ? this.dbVersion : dbVersion);
+  Config copyWith({int dbVersion, int appBuildNumber}) {
+    return Config(
+      dbVersion == null ? this.dbVersion : dbVersion,
+      appBuildNumber == null ? this.appBuildNumber : appBuildNumber,
+    );
   }
 
   factory Config.fromJson(Map<String, dynamic> parsedJson) {
-    return Config(parsedJson['dbVersion']);
+    int dbVersion = 1;
+    int appBuildNumber = 1;
+    if (parsedJson.containsKey('dbVersion'))
+      dbVersion = parsedJson['dbVersion'];
+    if (parsedJson.containsKey('appBuildNumber'))
+      appBuildNumber = parsedJson['appBuildNumber'];
+    return Config(dbVersion, appBuildNumber);
   }
 
   String toJson() {
-    return jsonEncode({'dbVersion': dbVersion});
+    return jsonEncode(
+      {'dbVersion': dbVersion, 'appBuildNumber': appBuildNumber},
+    );
   }
 }
 
-final Config dummyConfig = Config(1);
+final Config dummyConfig = Config(1, 1);

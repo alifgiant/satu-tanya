@@ -73,7 +73,10 @@ class _HomeContentState extends State<HomeContent> with WidgetsBindingObserver {
 
     final isDataNotExist =
         AppStateContainer.of(context).state.filteredQuestions().isEmpty;
-    if (remoteConfig.dbVersion != savedConfig?.dbVersion || isDataNotExist) {
+
+    if (remoteConfig.dbVersion != savedConfig?.dbVersion ||
+        remoteConfig.appBuildNumber > savedConfig.appBuildNumber ||
+        isDataNotExist) {
       await PrefHelper.storeConfigToDB(remoteConfig);
       return true;
     } else {

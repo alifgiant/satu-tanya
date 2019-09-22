@@ -29,6 +29,7 @@ dependencies:
   firebase_auth: ^0.14.0+5
   launch_review: ^2.0.0
   wc_flutter_share: ^0.1.1
+  package_info: ^0.4.0+6
 
 dev_dependencies:
   flutter_test:
