@@ -17,8 +17,8 @@ class AppAds {
   static void init() => ads ??= Ads(
         _appId,
         videoUnitId: _videoUnitId,
-        testing: true,
-        // testing: false,
+        // testing: true,
+        testing: false,
       );
 
   /// Remember to call this in the State object's dispose() function.
