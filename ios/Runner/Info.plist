@@ -45,5 +45,9 @@
 	<array>
 		<string>itms</string>
 	</array>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-1611091195560104~6409297110</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>

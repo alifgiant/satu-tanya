@@ -1,17 +1,25 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
 import 'package:satu_tanya/HomeScreen/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:satu_tanya/model/appState.dart';
 
-void main() async {
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  final user = await auth.currentUser();
-  // auth
-  if (user == null) {
-    await auth.signInAnonymously();
-  }
-  runApp(MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runZoned<Future<void>>(() async {
+    // run on splash screen
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final user = await auth.currentUser();
+    // auth
+    if (user == null) {
+      await auth.signInAnonymously();
+    }
+
+    runApp(MyApp());
+  }, onError: Crashlytics.instance.recordError);
 }
 
 class MyApp extends StatelessWidget {

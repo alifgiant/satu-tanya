@@ -7,11 +7,11 @@ class AppAds {
 
   static final String _appId = Platform.isAndroid
       ? 'ca-app-pub-1611091195560104~3590637364'
-      : 'ca-app-pub-3940256099942544~1458002511';
+      : 'ca-app-pub-1611091195560104~6409297110';
 
   static final String _videoUnitId = Platform.isAndroid
       ? 'ca-app-pub-1611091195560104/1020314344'
-      : 'ca-app-pub-3940256099942544/2934735716';
+      : 'ca-app-pub-1611091195560104/6956092026';
 
   /// Call this static function in your State object's initState() function.
   static void init() => ads ??= Ads(

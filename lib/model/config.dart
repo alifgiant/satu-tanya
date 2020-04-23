@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 final configRemoteUrl =
-    'https://raw.githubusercontent.com/alifgiant/satu-tanya/master/data/config.json';
+    'https://raw.githubusercontent.com/buahbatu/satu-tanya/master/data/config.json';
 
 class Config {
   static final key = 'CONFIG';

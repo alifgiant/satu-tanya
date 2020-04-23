@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>402820167504-182ica023c27re7n6eidcsvuo501gq2d.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.402820167504-182ica023c27re7n6eidcsvuo501gq2d</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>402820167504-coevovbn6f0jkv69ujg2isqso6bm5uv4.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA_Sod0t_j5GXgAEILJUkZLfniprztw7EY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>402820167504</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.buahbatu.satu-tanya</string>
+	<key>PROJECT_ID</key>
+	<string>satu-tanya</string>
+	<key>STORAGE_BUCKET</key>
+	<string>satu-tanya.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:402820167504:ios:46182bd399efe09bf39e55</string>
+	<key>DATABASE_URL</key>
+	<string>https://satu-tanya.firebaseio.com</string>
+</dict>
+</plist>

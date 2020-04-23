@@ -14,22 +14,23 @@ description: A new Flutter project.
 version: 1.0.5+5
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^0.1.2
-  flutter_svg: ^0.14.0
-  http: ^0.12.0+2
-  shared_preferences: ^0.5.3+4
-  ads: ^1.0.1
-  firebase_database: ^3.0.7
-  firebase_auth: ^0.14.0+5
+  cupertino_icons: ^0.1.3
+  flutter_svg: ^0.17.4
+  http: ^0.12.0+4
+  shared_preferences: ^0.5.7
+  ads: ^1.7.2
+  firebase_database: ^3.1.3
+  firebase_auth: ^0.16.0
+  firebase_crashlytics: ^0.1.3+3
   launch_review: ^2.0.0
-  wc_flutter_share: ^0.1.1
-  package_info: ^0.4.0+6
+  wc_flutter_share: ^0.2.0
+  package_info: ^0.4.0+17
 
 dev_dependencies:
   flutter_test:
