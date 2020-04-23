@@ -20,6 +20,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-1611091195560104~6409297110</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>itms</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -41,12 +47,6 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>itms</string>
-	</array>
-	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-1611091195560104~6409297110</string>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
 </dict>
